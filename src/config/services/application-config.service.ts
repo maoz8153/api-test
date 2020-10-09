@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import { IApplicationConfigService } from './application-config.interface';
+import { ServerMode } from './enum/server.mode.enum';
 
 export class ApplicationConfigService implements IApplicationConfigService {
   private envConfig: { [key: string]: string };
@@ -15,5 +16,9 @@ export class ApplicationConfigService implements IApplicationConfigService {
 
   public getMode():string {
     return this.envConfig.ENV_MODE || 'production';
+  }
+
+  public getServerMode():ServerMode {
+    return ServerMode[this.envConfig.ENV_MODE] || ServerMode.SLAVE;
   }
 }
