@@ -1,7 +1,13 @@
 {
     "compilerOptions": {
       "sourceMap": true,
-      "target": "es2017",
+      "target": "es2016",
+      "lib": [
+        "dom",
+        "es2015",
+        "es2015.promise"
+    ],
+    "module": "commonjs",
       "outDir": "./dist",
       "baseUrl": "./src"
     },

@@ -6,6 +6,7 @@ import { ServerModeService } from './services/server-mode.service';
 import { ServerMode } from './config/services/enum/server.mode.enum';
 
 const applictionConfigPath = process.env.npm_package_config_configPath || './config/config.env';
+console.log(applictionConfigPath);
 const applicationConfigService = new ApplicationConfigService(applictionConfigPath);
 const appRestService = new RestService(applicationConfigService.getRemoteServer());
 const appServerModeService = new ServerModeService(applicationConfigService.getRemoteServer())
