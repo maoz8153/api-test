@@ -9,7 +9,6 @@ export class App {
     port) {
     this.app = express();
     this.port = port;
- 
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
   }
@@ -17,6 +16,7 @@ export class App {
   private initializeMiddlewares() {
     this.app.use(bodyParser.json());
   }
+
  
   private initializeControllers(controllers) {
     controllers.forEach((controller) => {

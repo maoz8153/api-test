@@ -1,4 +1,4 @@
 export enum ServerMode {
-    MASTER,
-    SLAVE
+    MASTER = "MASTER",
+    SLAVE = "SLAVE"
 }

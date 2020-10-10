@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { IRestService } from 'services/interfaces/rest.interface';
 import { ServerMode } from '../../config/services/enum/server.mode.enum';
+import { IServerMode } from '../../services/interfaces/server-mode.interface';
 import { IRouteInitilaizer } from '../base/interfaces/route-initilaizer.interface';
 
 export class RestController implements IRouteInitilaizer {
@@ -11,16 +12,19 @@ export class RestController implements IRouteInitilaizer {
   private mode: ServerMode;
   private restSevice: IRestService;
   private errResponce = { code: 500, message: 'error responce' };
+  private serverModeService: IServerMode;
 
-  constructor(mode: ServerMode, service: IRestService) {
-    this.mode = mode;
+  constructor(appServerModeService: IServerMode, service: IRestService) {
+    this.serverModeService = appServerModeService;
     this.restSevice = service;
     this.intializeRoutes();
+    this.setMode();
   }
 
   public intializeRoutes() {
     this.router.get(this.path, this.get);
     this.router.post(this.path, this.post);
+    this.router.get(this.path + `/mode`, this.getMode);
   }
 
   public async get(request: Request, response: Response) {
@@ -33,23 +37,6 @@ export class RestController implements IRouteInitilaizer {
       } catch (error) {
         this.errorHandler(error, response);
       }
-    }
-  }
-
-  private errorHandler(error: any, response: Response<any>) {
-    if (error.code !== 500) {
-      response.status(this.errResponce.code).send(this.errResponce.message);
-    } else {
-      this.mode = ServerMode.MASTER;
-    }
-  }
-
-  private getRequestMaster(response: Response<any>) {
-    if (this.localCache) {
-      response.send(this.localCache);
-      this.localCache = null;
-    } else {
-      response.status(this.errResponce.code).send(this.errResponce.message);
     }
   }
 
@@ -66,9 +53,39 @@ export class RestController implements IRouteInitilaizer {
     }
   }
 
+  public getMode(request: Request, response: Response) {
+    response.send(this.mode);
+  }
+
+  private async setMode() {
+    try {
+      const serverMode = await this.serverModeService.getServerMode();
+      this.mode = ServerMode[serverMode.body];
+    } catch (error) {
+      this.mode = ServerMode.MASTER;
+    }
+  }
+
   private postRequestMaster(request: Request, response: Response) {
     if (this.localCache) {
       this.localCache = request.body;
+    } else {
+      response.status(this.errResponce.code).send(this.errResponce.message);
+    }
+  }
+
+  private errorHandler(error: any, response: Response<any>) {
+    if (error.code !== 500) {
+      response.status(this.errResponce.code).send(this.errResponce.message);
+    } else {
+      this.mode = ServerMode.MASTER;
+    }
+  }
+
+  private getRequestMaster(response: Response<any>) {
+    if (this.localCache) {
+      response.send(this.localCache);
+      this.localCache = null;
     } else {
       response.status(this.errResponce.code).send(this.errResponce.message);
     }
