@@ -2,12 +2,13 @@ import request from "request-promise-native";
 import { IRestService } from "./interfaces/rest.interface";
 
 
-export class RestService implements IRestService{
-    constructor(private remoteServer: string) {}
+export class RestService implements IRestService {
+    private path = 'api/resource';
+    constructor(private remoteServer: string) { }
     async getData(): Promise<any> {
-        return await request.get(this.remoteServer );
+        return await request.get(this.remoteServer + this.path);
     };
     async postData(data: any): Promise<any> {
-        return await request.post(this.remoteServer , { body: data, json: true });
+        return await request.post(this.remoteServer + this.path, { body: data, json: true });
     };
 }
