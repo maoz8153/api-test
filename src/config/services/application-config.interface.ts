@@ -4,4 +4,5 @@ export interface IApplicationConfigService {
     getPort():number;
     getMode():string;
     getServerMode(): ServerMode;
+    getRemoteServer():string;
 }

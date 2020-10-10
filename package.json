@@ -20,7 +20,10 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "ts-node": "^8.6.2",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "body-parser": "^1.18.3",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
   },
   "devDependencies": {
     "@types/express": "^4.17.3",

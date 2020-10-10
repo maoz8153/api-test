@@ -6,7 +6,7 @@ const applictionConfigPath = process.env.npm_package_config_configPath || './con
 const applicationConfigService = new ApplicationConfigService(applictionConfigPath)
 const app = new App(
   [
-    new RestController(),
+    new RestController(applicationConfigService.getServerMode()),
   ],
   applicationConfigService.getPort()
 );

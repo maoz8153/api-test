@@ -21,4 +21,8 @@ export class ApplicationConfigService implements IApplicationConfigService {
   public getServerMode():ServerMode {
     return ServerMode[this.envConfig.ENV_MODE] || ServerMode.SLAVE;
   }
+
+  public getRemoteServer():string {
+    return this.envConfig.REMOTE_SERVER || 'http://localhost';
+  }
 }

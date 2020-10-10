@@ -1,11 +1,16 @@
+import { ServerMode } from 'config/services/enum/server.mode.enum';
 import {Request, Response, Router} from 'express';
 import { IRouteInitilaizer } from '../base/interfaces/route-initilaizer.interface';
  
 export class RestController implements IRouteInitilaizer{
   public path = '/rest';
   public router = Router();
+
+  public localCache: string;
+  public mode: ServerMode;
  
-  constructor() {
+  constructor(mode : ServerMode) {
+    this.mode = mode;
     this.intializeRoutes();
   }
  
@@ -14,7 +19,16 @@ export class RestController implements IRouteInitilaizer{
   }
  
   public get(request: Request, response: Response){
-    response.send("REST api");
+    if (this.mode === ServerMode.MASTER) {
+      response.send(this.localCache); 
+    } else {
+
+    }
+    
+  }
+
+  private async getDataFromMaster() {
+
   }
  
 }
