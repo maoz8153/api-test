@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start" : "node ./dist/server.js",
-    "prod1": "ts-node ./src/server.ts SERVER1",
+    "prod1": "ts-node ./src/server.ts SERVER2",
+    "prod2": "ts-node ./src/server.ts SERVER1",
     "dev": "ts-node ./src/server.ts",
     "build": "tsc"
   },
