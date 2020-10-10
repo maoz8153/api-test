@@ -20,6 +20,7 @@ export class RestController implements IRouteInitilaizer {
 
   public intializeRoutes() {
     this.router.get(this.path, this.get);
+    this.router.post(this.path, this.post);
   }
 
   public async get(request: Request, response: Response) {
@@ -60,7 +61,7 @@ export class RestController implements IRouteInitilaizer {
         const restServiceResponce = await this.restSevice.postData(request.body);
         response.send();
       } catch (error) {
-        console.log(error);
+        this.errorHandler(error, response);
       }
     }
   }
