@@ -8,6 +8,7 @@ export class ApplicationConfigService implements IApplicationConfigService {
 
   constructor(filePath: string) {
     this.envConfig = dotenv.parse(fs.readFileSync(filePath));
+    console.log(JSON.stringify(this.envConfig));
   }
 
   public getPort():number {

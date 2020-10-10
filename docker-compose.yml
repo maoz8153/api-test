@@ -1,0 +1,16 @@
+version: '3'
+services:
+    server1:
+        build: .
+        environment:
+        - npm_package_config_configPath=../config/config.env
+        - npm_package_config_idpConfigPath=../config/IdpProperties.json
+        ports:
+        - "${PORT}:${PORT}"
+    server2:
+        build: .
+        environment:
+            - npm_package_config_configPath=../config/config.env
+            - npm_package_config_idpConfigPath=../config/IdpProperties.json
+        ports:
+            - "${PORT}:${PORT}"
