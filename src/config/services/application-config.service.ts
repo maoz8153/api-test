@@ -5,9 +5,16 @@ import { ServerMode } from './enum/server.mode.enum';
 
 export class ApplicationConfigService implements IApplicationConfigService {
   private envConfig: { [key: string]: string };
+  private serverList = {
+    SERVER1 : 'http://ec2-18-184-130-111.eu-central-1.compute.amazonaws.com',
+    SERVER2 : 'http://ec2-18-184-17-86.eu-central-1.compute.amazonaws.com'
+  }
 
-  constructor(filePath: string) {
+  constructor(filePath: string, server?: string) {
     this.envConfig = dotenv.parse(fs.readFileSync(filePath));
+    if (server) {
+      this.envConfig.REMOTE_SERVER = this.serverList[server];
+    }
     console.log(JSON.stringify(this.envConfig));
   }
 
@@ -20,10 +27,14 @@ export class ApplicationConfigService implements IApplicationConfigService {
   }
 
   public getServerMode():ServerMode {
-    return ServerMode[this.envConfig.ENV_MODE] || ServerMode.SLAVE;
+    return ServerMode[this.envConfig.SERVER_MODE] || ServerMode.SLAVE;
   }
 
   public getRemoteServer():string {
     return this.envConfig.REMOTE_SERVER || 'http://localhost';
+  }
+
+  public setServerMode(mode: string) {
+    this.envConfig.SERVER_MODE = mode;
   }
 }

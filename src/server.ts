@@ -6,10 +6,29 @@ import { ServerModeService } from './services/server-mode.service';
 import { ServerMode } from './config/services/enum/server.mode.enum';
 
 const applictionConfigPath = process.env.npm_package_config_configPath || './config/config.env';
-console.log(applictionConfigPath);
-const applicationConfigService = new ApplicationConfigService(applictionConfigPath);
+const remoteServer = process.argv[2];
+const applicationConfigService = new ApplicationConfigService(applictionConfigPath, remoteServer);
 const appRestService = new RestService(applicationConfigService.getRemoteServer());
-const appServerModeService = new ServerModeService(applicationConfigService.getRemoteServer())
+const appServerModeService = new ServerModeService()
+
+if (remoteServer) {
+  initMode(remoteServer)
+}
+
+async function initMode(remoteServer) {
+  const currentMode = await getServerMode(remoteServer)
+  applicationConfigService.setServerMode(currentMode);
+}
+
+async function getServerMode(server:string) {
+  try {
+   const mode = await appServerModeService.getServerMode(server);
+   return ServerMode[mode.body];
+  } catch (error) {
+    return ServerMode.MASTER;
+  }
+}
+
 
 const app = new App(
   [

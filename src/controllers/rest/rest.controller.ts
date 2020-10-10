@@ -18,7 +18,6 @@ export class RestController implements IRouteInitilaizer {
     this.serverModeService = appServerModeService;
     this.restSevice = service;
     this.intializeRoutes();
-    this.setMode();
   }
 
   public intializeRoutes() {
@@ -55,15 +54,6 @@ export class RestController implements IRouteInitilaizer {
 
   public getMode(request: Request, response: Response) {
     response.send(this.mode);
-  }
-
-  private async setMode() {
-    try {
-      const serverMode = await this.serverModeService.getServerMode();
-      this.mode = ServerMode[serverMode.body];
-    } catch (error) {
-      this.mode = ServerMode.MASTER;
-    }
   }
 
   private postRequestMaster(request: Request, response: Response) {

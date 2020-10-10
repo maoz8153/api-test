@@ -1,3 +1,3 @@
 export interface IServerMode {
-    getServerMode(): Promise<any>;
+    getServerMode(server: string): Promise<any>;
 }
