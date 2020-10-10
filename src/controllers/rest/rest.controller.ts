@@ -7,9 +7,10 @@ export class RestController implements IRouteInitilaizer{
   public path = '/rest';
   public router = Router();
 
-  public localCache: string;
-  public mode: ServerMode;
+  private localCache: string;
+  private mode: ServerMode;
   private restSevice: IRestService;
+  private errResponce = { code: 500, message: 'error responce'};
  
   constructor(mode : ServerMode, service : IRestService) {
     this.mode = mode;
@@ -23,20 +24,37 @@ export class RestController implements IRouteInitilaizer{
  
   public async get(request: Request, response: Response){
     if (this.mode === ServerMode.MASTER) {
-      response.send(this.localCache); 
+      this.getRequestMaster(response); 
     } else {
       try {
         const restData = await this.restSevice.getData();
         response.send(restData); 
       } catch (error) {
-       console.log(error);
+       this.errorHandler(error, response);
       }
+    }
+  }
+
+  private errorHandler(error: any, response: Response<any>) {
+    if (error.code !== 500) {
+      response.status(this.errResponce.code).send(this.errResponce.message);
+    } else {
+      this.mode = ServerMode.MASTER;
+    }
+  }
+
+  private getRequestMaster(response: Response<any>) {
+    if (this.localCache) {
+      response.send(this.localCache);
+      this.localCache = null;
+    } else {
+      response.status(this.errResponce.code).send(this.errResponce.message);
     }
   }
 
   public async post(request: Request, response: Response){
     if (this.mode === ServerMode.MASTER) {
-      this.localCache = request.body;
+      this.postRequestMaster(request, response);
     } else {
       try {
         const restServiceResponce = await this.restSevice.postData(request.body);
@@ -47,6 +65,12 @@ export class RestController implements IRouteInitilaizer{
     }
   }
 
- 
+  private postRequestMaster(request: Request, response: Response) {
+    if (this.localCache) {
+      this.localCache = request.body;
+    } else {
+      response.status(this.errResponce.code).send(this.errResponce.message);
+    }
+  }
 }
  
