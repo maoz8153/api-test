@@ -1,6 +1,6 @@
-import { ServerMode } from 'config/services/enum/server.mode.enum';
 import { Request, Response, Router } from 'express';
 import { IRestService } from 'services/interfaces/rest.interface';
+import { ServerMode } from '../../config/services/enum/server.mode.enum';
 import { IRouteInitilaizer } from '../base/interfaces/route-initilaizer.interface';
 
 export class RestController implements IRouteInitilaizer {
