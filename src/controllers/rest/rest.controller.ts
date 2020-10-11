@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express';
 import { ServerMode } from '../../config/services/enum/server.mode.enum';
 import { IRestService } from '../../services/interfaces/rest.interface';
 import { IServerMode } from '../../services/interfaces/server-mode.interface';
+import { RestService } from '../../services/rest.service';
 import { IRouteInitilaizer } from '../base/interfaces/route-initilaizer.interface';
 
 export class RestController implements IRouteInitilaizer {
@@ -10,11 +11,11 @@ export class RestController implements IRouteInitilaizer {
 
   private localCache = {};
   private mode: ServerMode;
-  private restSevice: IRestService;
+  private restSevice: RestService;
   private errResponce = { code: 500, message: 'error responce' };
   private sucssesRespoce = 'operation successful';
 
-  constructor(restSevice: IRestService, mode: ServerMode) {
+  constructor(restSevice: RestService, mode: ServerMode) {
     this.restSevice = restSevice;
     this.mode = mode;
     this.intializeRoutes();
