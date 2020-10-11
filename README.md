@@ -1,16 +1,13 @@
 # api-test
-1. npm install
+run localy with one server:
+    1. npm install
+    2. npm start
 
 to run localy with docker:
     1.docker-compose  up --build -d
 
+docker repo:
+    https://hub.docker.com/repository/docker/ma8153/test-api
 
-to run on server ec2-18-184-130-111.eu-central-1.compute.amazonaws.com:
-    1. git clone https://github.com/maoz8153/api-test.git
-    2. npm install
-    3. npm run prod1
-
-to run on server ec2-18-184-17-86.eu-central-1.compute.amazonaws.com:
-    1. git clone https://github.com/maoz8153/api-test.git
-    2. npm install
-    3. npm run prod2
+    docker pull ma8153/test-api:server2
+    docker run -d -p 80:80  6ad24bc289c1
