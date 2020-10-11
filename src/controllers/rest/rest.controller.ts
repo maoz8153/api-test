@@ -12,11 +12,10 @@ export class RestController implements IRouteInitilaizer {
   private mode: ServerMode;
   private restSevice: IRestService;
   private errResponce = { code: 500, message: 'error responce' };
-  private serverModeService: IServerMode;
 
-  constructor(appServerModeService: IServerMode, service: IRestService) {
-    this.serverModeService = appServerModeService;
+  constructor(service: IRestService, mode: ServerMode ) {
     this.restSevice = service;
+    this.mode = mode;
     this.intializeRoutes();
   }
 
@@ -25,6 +24,8 @@ export class RestController implements IRouteInitilaizer {
     this.router.post(this.path, this.post);
     this.router.get(this.path + `/mode`, this.getMode);
   }
+
+
 
   public async get(request: Request, response: Response) {
     if (this.mode === ServerMode.MASTER) {

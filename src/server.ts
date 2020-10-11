@@ -8,12 +8,13 @@ import { ServerMode } from './config/services/enum/server.mode.enum';
 const applictionConfigPath = process.env.npm_package_config_configPath || './config/config.env';
 const remoteServer = process.argv[2];
 const applicationConfigService = new ApplicationConfigService(applictionConfigPath, remoteServer);
-const appRestService = new RestService(applicationConfigService.getRemoteServer());
-const appServerModeService = new ServerModeService()
-
 if (remoteServer) {
   initMode(remoteServer)
 }
+const appRestService = new RestService(applicationConfigService.getRemoteServer());
+const appServerModeService = new ServerModeService()
+
+
 
 async function initMode(remoteServer) {
   const currentMode = await getServerMode(remoteServer)
@@ -23,6 +24,7 @@ async function initMode(remoteServer) {
 async function getServerMode(server:string) {
   try {
    const mode = await appServerModeService.getServerMode(server);
+   console.log(mode);
    return ServerMode[mode.body];
   } catch (error) {
     return ServerMode.MASTER;
@@ -32,7 +34,7 @@ async function getServerMode(server:string) {
 
 const app = new App(
   [
-    new RestController(appServerModeService, appRestService),
+    new RestController(appRestService, applicationConfigService.getServerMode()),
   ],
   applicationConfigService.getPort(),
 
