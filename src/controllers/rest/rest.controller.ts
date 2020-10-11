@@ -13,10 +13,9 @@ export class RestController implements IRouteInitilaizer {
   private restSevice: IRestService;
   private errResponce = { code: 500, message: 'error responce' };
   private sucssesRespoce = 'operation successful';
-  private serverModeService: IServerMode;
 
-  constructor(appServerModeService: IServerMode, mode: ServerMode) {
-    this.serverModeService = appServerModeService;
+  constructor(restSevice: IRestService, mode: ServerMode) {
+    this.restSevice = restSevice;
     this.mode = mode;
     this.intializeRoutes();
   }

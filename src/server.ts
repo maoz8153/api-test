@@ -12,7 +12,7 @@ const appRestService = new RestService(applicationConfigService.getRemoteServer(
 const appServerModeService = new ServerModeService()
 const app = new App(
   [
-    new RestController(appServerModeService, applicationConfigService.getServerMode()),
+    new RestController(appRestService, applicationConfigService.getServerMode()),
   ],
   applicationConfigService.getPort(),
 
