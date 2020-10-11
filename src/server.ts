@@ -10,29 +10,9 @@ const remoteServer = process.argv[2];
 const applicationConfigService = new ApplicationConfigService(applictionConfigPath, remoteServer);
 const appRestService = new RestService(applicationConfigService.getRemoteServer());
 const appServerModeService = new ServerModeService()
-
-if (remoteServer) {
-  initMode(remoteServer)
-}
-
-async function initMode(remoteServer) {
-  const currentMode = await getServerMode(remoteServer)
-  applicationConfigService.setServerMode(currentMode);
-}
-
-async function getServerMode(server:string) {
-  try {
-   const mode = await appServerModeService.getServerMode(server);
-   return ServerMode[mode.body];
-  } catch (error) {
-    return ServerMode.MASTER;
-  }
-}
-
-
 const app = new App(
   [
-    new RestController(appServerModeService, appRestService),
+    new RestController(appServerModeService, applicationConfigService.getServerMode()),
   ],
   applicationConfigService.getPort(),
 

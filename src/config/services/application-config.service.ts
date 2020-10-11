@@ -10,6 +10,8 @@ export class ApplicationConfigService implements IApplicationConfigService {
     SERVER2 : 'http://ec2-18-184-17-86.eu-central-1.compute.amazonaws.com'
   }
 
+  serverMode = ServerMode;
+
   constructor(filePath: string, server?: string) {
     this.envConfig = dotenv.parse(fs.readFileSync(filePath));
     if (server) {
@@ -27,7 +29,7 @@ export class ApplicationConfigService implements IApplicationConfigService {
   }
 
   public getServerMode():ServerMode {
-    return ServerMode[this.envConfig.SERVER_MODE] || ServerMode.SLAVE;
+    return this.serverMode[this.envConfig.SERVER_MODE] || ServerMode.SLAVE;
   }
 
   public getRemoteServer():string {

@@ -8,22 +8,23 @@ export class RestController implements IRouteInitilaizer {
   public path = '/api/resource';
   public router = Router();
 
-  private localCache: string;
+  private localCache = {};
   private mode: ServerMode;
   private restSevice: IRestService;
   private errResponce = { code: 500, message: 'error responce' };
+  private sucssesRespoce = 'operation successful';
   private serverModeService: IServerMode;
 
-  constructor(appServerModeService: IServerMode, service: IRestService) {
+  constructor(appServerModeService: IServerMode, mode: ServerMode) {
     this.serverModeService = appServerModeService;
-    this.restSevice = service;
+    this.mode = mode;
     this.intializeRoutes();
   }
 
   public intializeRoutes() {
-    this.router.get(this.path, this.get);
-    this.router.post(this.path, this.post);
-    this.router.get(this.path + `/mode`, this.getMode);
+    this.router.get(this.path, this.get.bind(this));
+    this.router.post(this.path, this.post.bind(this));
+    this.router.get(this.path + `/mode`, this.getMode.bind(this));
   }
 
   public async get(request: Request, response: Response) {
@@ -57,8 +58,9 @@ export class RestController implements IRouteInitilaizer {
   }
 
   private postRequestMaster(request: Request, response: Response) {
-    if (this.localCache) {
+    if (Object.keys(this.localCache).length === 0) {
       this.localCache = request.body;
+      response.send(this.sucssesRespoce);
     } else {
       response.status(this.errResponce.code).send(this.errResponce.message);
     }
@@ -73,9 +75,9 @@ export class RestController implements IRouteInitilaizer {
   }
 
   private getRequestMaster(response: Response<any>) {
-    if (this.localCache) {
+    if (Object.keys(this.localCache).length > 0) {
       response.send(this.localCache);
-      this.localCache = null;
+      this.localCache = {};
     } else {
       response.status(this.errResponce.code).send(this.errResponce.message);
     }
