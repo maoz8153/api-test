@@ -1,7 +1,5 @@
 import { Request, Response, Router } from 'express';
 import { ServerMode } from '../../config/services/enum/server.mode.enum';
-import { IRestService } from '../../services/interfaces/rest.interface';
-import { IServerMode } from '../../services/interfaces/server-mode.interface';
 import { RestService } from '../../services/rest.service';
 import { IRouteInitilaizer } from '../base/interfaces/route-initilaizer.interface';
 
