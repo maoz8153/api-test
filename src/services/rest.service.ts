@@ -3,7 +3,7 @@ import { IRestService } from "./interfaces/rest.interface";
 
 
 export class RestService implements IRestService {
-    private path = 'api/resource';
+    private path = '/api/resource';
     constructor(private remoteServer: string) { }
     async getData(): Promise<any> {
         return await request.get(this.remoteServer + this.path);
