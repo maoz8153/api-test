@@ -31,7 +31,8 @@ export class RestController implements IRouteInitilaizer {
     } else {
       try {
         const restData = await this.restSevice.getData();
-        response.send(restData);
+        const data = restData.data.body;
+        response.send(data);
       } catch (error) {
         this.errorHandler(error, response);
       }
@@ -44,7 +45,7 @@ export class RestController implements IRouteInitilaizer {
     } else {
       try {
         const restServiceResponce = await this.restSevice.postData(request.body);
-        response.send();
+        response.send(this.sucssesRespoce);
       } catch (error) {
         this.errorHandler(error, response);
       }
